@@ -20,14 +20,14 @@ public class DBClient {
     static void run() {
         System.out.println("Введите требуемый запрос");
         Scanner s = new Scanner(System.in);
-        String inquiry = s.nextLine().toUpperCase();
-        String[] first = inquiry.split(" ");
+        String query = s.nextLine().toUpperCase();
+        String[] first = query.split(" ");
 
         try (Connection conn = DriverManager.getConnection(url)) {
             Statement stmt = conn.createStatement();
             switch (first[0]) {
                 case "SELECT":
-                    ResultSet rs = stmt.executeQuery(inquiry);
+                    ResultSet rs = stmt.executeQuery(query);
                     ResultSetMetaData rsmd = rs.getMetaData();
                     while (rs.next()) {
                         for (int i = 1; i <= rsmd.getColumnCount(); i++) {
@@ -41,13 +41,13 @@ public class DBClient {
                 case "INSERT":
                 case "UPDATE":
                 case "DELETE":
-                    System.out.println(stmt.executeUpdate(inquiry) + " rows affected");
+                    System.out.println(stmt.executeUpdate(query) + " rows affected");
                     break;
 
                 case "CREATE":
                 case "ALTER":
                 case "DROP":
-                    System.out.println(stmt.execute(inquiry));
+                    System.out.println(stmt.execute(query));
                     break;
 
                 default:
