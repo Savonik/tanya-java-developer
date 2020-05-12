@@ -20,18 +20,32 @@ public class DBClient {
     static void run() {
         System.out.println("Введите требуемый запрос");
         Scanner s = new Scanner(System.in);
-        String query = s.nextLine().toUpperCase();
-        String[] first = query.split(" ");
+        String query = "";
+        StringBuilder stringBuilder = new StringBuilder(query);
 
+        while (true) {
+            String current = s.nextLine().toUpperCase();
+            if (current.equals("")) break;
+            stringBuilder.append(current).append(" ");
+        }
+        query = stringBuilder.toString();
+        String[] split = query.split(" ");
         try (Connection conn = DriverManager.getConnection(url)) {
             Statement stmt = conn.createStatement();
-            switch (first[0]) {
+
+            switch (split[0]) {
                 case "SELECT":
                     ResultSet rs = stmt.executeQuery(query);
                     ResultSetMetaData rsmd = rs.getMetaData();
+
+                    for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                        System.out.printf(" %-15.10s", rsmd.getColumnName(i));
+                    }
+                    System.out.println();
                     while (rs.next()) {
                         for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                            System.out.print(rs.getString(rsmd.getColumnName(i)) + "   ");
+                            System.out.printf(" %-15.10s", rs.getString(rsmd.getColumnName(i)));
+
                         }
                         System.out.println();
                     }
