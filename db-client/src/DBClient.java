@@ -24,16 +24,17 @@ public class DBClient {
         StringBuilder stringBuilder = new StringBuilder(query);
 
         while (true) {
-            String current = s.nextLine().toUpperCase();
+            String current = s.nextLine();
             if (current.equals("")) break;
             stringBuilder.append(current).append(" ");
         }
         query = stringBuilder.toString();
         String[] split = query.split(" ");
+        String firstWord = split[0].toUpperCase();
         try (Connection conn = DriverManager.getConnection(url)) {
             Statement stmt = conn.createStatement();
 
-            switch (split[0]) {
+            switch (firstWord) {
                 case "SELECT":
                     ResultSet rs = stmt.executeQuery(query);
                     ResultSetMetaData rsmd = rs.getMetaData();
