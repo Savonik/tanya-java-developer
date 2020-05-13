@@ -29,8 +29,7 @@ public class DBClient {
             stringBuilder.append(current).append(" ");
         }
         query = stringBuilder.toString();
-        String[] split = query.split(" ");
-        String firstWord = split[0].toUpperCase();
+        String firstWord = (query.split(" "))[0].toUpperCase();
         try (Connection conn = DriverManager.getConnection(url)) {
             Statement stmt = conn.createStatement();
 
