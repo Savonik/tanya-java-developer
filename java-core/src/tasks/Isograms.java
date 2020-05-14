@@ -14,8 +14,13 @@ is an isogram. Assume the empty string is an isogram. Ignore letter case.
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String s = scanner.nextLine().toUpperCase();
+
+        System.out.println(isIsogram(s));
+    }
+
+    static boolean isIsogram(String s) {
         if (s.length() == 0) {
-            System.out.println(true);
+            return true;
         }
         char[] chars = s.toCharArray();
 
@@ -25,6 +30,6 @@ is an isogram. Assume the empty string is an isogram. Ignore letter case.
                     chars[j] = ' ';
                 }
         String isogram = String.valueOf(chars).replaceAll(" ", "");
-        System.out.println(s.equals(isogram));
+        return s.equals(isogram);
     }
 }
