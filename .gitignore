@@ -6,4 +6,6 @@
 .project
 .classpath
 .idea/
+out/
+target/
 *.iml
