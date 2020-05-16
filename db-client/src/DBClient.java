@@ -14,7 +14,6 @@ public class DBClient {
     public static void main(String[] args) {
         run();
     }
-
     static String url = "jdbc:postgresql://localhost/mydb?user=postgres&password=savonik1993";
 
     static void run() {
@@ -72,7 +71,7 @@ public class DBClient {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+     run();
     }
 
 }
