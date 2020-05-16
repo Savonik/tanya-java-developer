@@ -18,11 +18,11 @@ public class Isograms {
     }
 
     static boolean isIsogram(String s) {
-        s = s.toUpperCase();
+        s = s.toLowerCase();
         char[] chars = s.toCharArray();
-        for (int i = 0; i < chars.length; i++)
-            for (int j = 1; j < chars.length-i; j++)
-                if (chars[i] == chars[i+j]) {
+        for (int i = 0; i < chars.length-1; i++)
+            for (int j = i+1; j < chars.length; j++)
+                if (chars[i] == chars[j]) {
                     return false;
                 }
         return true;
