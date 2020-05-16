@@ -22,7 +22,6 @@ public class DBClient {
         Scanner s = new Scanner(System.in);
         String query = s.nextLine().toUpperCase();
         String[] first = query.split(" ");
-
         try (Connection conn = DriverManager.getConnection(url)) {
             Statement stmt = conn.createStatement();
             switch (first[0]) {
