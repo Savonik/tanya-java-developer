@@ -31,50 +31,50 @@ public class DBClient {
                 break;
             }
             stringBuilder.append(current).append(" ");
-        query = stringBuilder.toString();
-        String firstWord = (query.split(" "))[0].toUpperCase();
-        try (Connection conn = DriverManager.getConnection(url)) {
-            Statement stmt = conn.createStatement();
+            query = stringBuilder.toString();
+            String firstWord = (query.split(" "))[0].toUpperCase();
+            try (Connection conn = DriverManager.getConnection(url)) {
+                Statement stmt = conn.createStatement();
 
-            switch (firstWord) {
-                case "SELECT":
-                    ResultSet rs = stmt.executeQuery(query);
-                    ResultSetMetaData rsmd = rs.getMetaData();
+                switch (firstWord) {
+                    case "SELECT":
+                        ResultSet rs = stmt.executeQuery(query);
+                        ResultSetMetaData rsmd = rs.getMetaData();
 
-                    for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                        System.out.printf(" %-15.10s", rsmd.getColumnName(i));
-                    }
-                    System.out.println();
-                    while (rs.next()) {
                         for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                            System.out.printf(" %-15.10s", rs.getString(rsmd.getColumnName(i)));
-
+                            System.out.printf(" %-15.10s", rsmd.getColumnName(i));
                         }
                         System.out.println();
-                    }
-                    rs.close();
+                        while (rs.next()) {
+                            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                                System.out.printf(" %-15.10s", rs.getString(rsmd.getColumnName(i)));
 
-                    break;
-                case "INSERT":
-                case "UPDATE":
-                case "DELETE":
-                    System.out.println(stmt.executeUpdate(query) + " rows affected");
-                    break;
+                            }
+                            System.out.println();
+                        }
+                        rs.close();
 
-                case "CREATE":
-                case "ALTER":
-                case "DROP":
-                    System.out.println(stmt.execute(query));
-                    break;
+                        break;
+                    case "INSERT":
+                    case "UPDATE":
+                    case "DELETE":
+                        System.out.println(stmt.executeUpdate(query) + " rows affected");
+                        break;
 
-                default:
-                    System.out.println("Ваш запрос некорректен");
+                    case "CREATE":
+                    case "ALTER":
+                    case "DROP":
+                        System.out.println(stmt.execute(query));
+                        break;
+
+                    default:
+                        System.out.println("Ваш запрос некорректен");
+                }
+
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-            stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
         }
     }
 }
