@@ -22,7 +22,6 @@ public class DBClient {
         Scanner s = new Scanner(System.in);
         String query = "";
         StringBuilder stringBuilder = new StringBuilder(query);
-
         while (true) {
             String current = s.nextLine();
             if (current.toLowerCase().equals("exit")) {
@@ -32,7 +31,6 @@ public class DBClient {
                 break;
             }
             stringBuilder.append(current).append(" ");
-        }
         query = stringBuilder.toString();
         String firstWord = (query.split(" "))[0].toUpperCase();
         try (Connection conn = DriverManager.getConnection(url)) {
@@ -77,6 +75,6 @@ public class DBClient {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        run();
+        }
     }
 }
