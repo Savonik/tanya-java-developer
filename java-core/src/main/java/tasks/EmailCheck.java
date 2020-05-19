@@ -8,16 +8,13 @@ public class EmailCheck {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String str = scanner.nextLine();
-        System.out.println(isValid(str));
+        System.out.println(isValid(str) ? "Valid email" : "Invalid email");
     }
-    public static String isValid(String s){
+
+    public static boolean isValid(String s) {
         String regexp = "^[a-zA-Z0-9]+[\\w.-]+[\\w&&[^_]]{1}@{1}[a-zA-Z]+\\.{1}[a-zA-Z]+";
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(s);
-        if (matcher.find()) {
-            return "Valid email";
-        } else {
-            return "Invalid email";
-        }
+        return matcher.find();
     }
 }
