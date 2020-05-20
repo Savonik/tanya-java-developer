@@ -18,20 +18,14 @@ public class DBClient {
     static String url = "jdbc:postgresql://localhost/mydb?user=postgres&password=savonik1993";
 
     static void run() {
-        System.out.println("Введите требуемый запрос");
+        System.out.println("Enter the required query");
         Scanner s = new Scanner(System.in);
-        String query = "";
-        StringBuilder stringBuilder = new StringBuilder(query);
+
         while (true) {
-            String current = s.nextLine();
-            if (current.toLowerCase().equals("exit")) {
+            String query = s.nextLine();
+            if (query.toLowerCase().equals("exit")) {
                 return;
             }
-            if (current.equals("")) {
-                break;
-            }
-            stringBuilder.append(current).append(" ");
-            query = stringBuilder.toString();
             String firstWord = (query.split(" "))[0].toUpperCase();
             try (Connection conn = DriverManager.getConnection(url)) {
                 Statement stmt = conn.createStatement();
@@ -68,7 +62,7 @@ public class DBClient {
                         break;
 
                     default:
-                        System.out.println("Ваш запрос некорректен");
+                        System.out.println("Your query is incorrect");
                 }
 
                 stmt.close();
