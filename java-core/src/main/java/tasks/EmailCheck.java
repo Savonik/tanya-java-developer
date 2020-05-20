@@ -12,7 +12,7 @@ public class EmailCheck {
     }
 
     public static boolean isValid(String s) {
-        String regexp = "^[a-zA-Z0-9]+[\\w.-]+[\\w&&[^_]]{1}@{1}[a-zA-Z]+\\.{1}[a-zA-Z]+";
+        String regexp = "^[a-zA-Z0-9]+[a-zA-Z0-9.-]+[a-zA-Z0-9]{1}@{1}[a-zA-Z]+\\.{1}[a-zA-Z]+";
         Pattern pattern = Pattern.compile(regexp);
         Matcher matcher = pattern.matcher(s);
         return matcher.find();

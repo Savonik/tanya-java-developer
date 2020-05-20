@@ -18,6 +18,7 @@ public class EmailCheckTest {
         assertFalse(EmailCheck.isValid("savonik3636@.com"));
         assertFalse(EmailCheck.isValid("savonik3636@cc."));
         assertFalse(EmailCheck.isValid("savonik3636gmail.com@"));
+        assertFalse(EmailCheck.isValid("savonik3636@gma@il.com.123"));
       
               
     }
