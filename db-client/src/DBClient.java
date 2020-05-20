@@ -18,47 +18,57 @@ public class DBClient {
     static String url = "jdbc:postgresql://localhost/mydb?user=postgres&password=savonik1993";
 
     static void run() {
-        System.out.println("Введите требуемый запрос");
+        System.out.println("Enter the required query");
         Scanner s = new Scanner(System.in);
-        String query = s.nextLine().toUpperCase();
-        String[] first = query.split(" ");
 
-        try (Connection conn = DriverManager.getConnection(url)) {
-            Statement stmt = conn.createStatement();
-            switch (first[0]) {
-                case "SELECT":
-                    ResultSet rs = stmt.executeQuery(query);
-                    ResultSetMetaData rsmd = rs.getMetaData();
-                    while (rs.next()) {
+        while (true) {
+            String query = s.nextLine();
+            if (query.toLowerCase().equals("exit")) {
+                return;
+            }
+            String firstWord = (query.split(" "))[0].toUpperCase();
+            try (Connection conn = DriverManager.getConnection(url)) {
+                Statement stmt = conn.createStatement();
+
+                switch (firstWord) {
+                    case "SELECT":
+                        ResultSet rs = stmt.executeQuery(query);
+                        ResultSetMetaData rsmd = rs.getMetaData();
+
                         for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                            System.out.print(rs.getString(rsmd.getColumnName(i)) + "   ");
+                            System.out.printf(" %-15.10s", rsmd.getColumnName(i));
                         }
                         System.out.println();
-                    }
-                    rs.close();
+                        while (rs.next()) {
+                            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+                                System.out.printf(" %-15.10s", rs.getString(rsmd.getColumnName(i)));
 
-                    break;
-                case "INSERT":
-                case "UPDATE":
-                case "DELETE":
-                    System.out.println(stmt.executeUpdate(query) + " rows affected");
-                    break;
+                            }
+                            System.out.println();
+                        }
+                        rs.close();
 
-                case "CREATE":
-                case "ALTER":
-                case "DROP":
-                    System.out.println(stmt.execute(query));
-                    break;
+                        break;
+                    case "INSERT":
+                    case "UPDATE":
+                    case "DELETE":
+                        System.out.println(stmt.executeUpdate(query) + " rows affected");
+                        break;
 
-                default:
-                    System.out.println("Ваш запрос некорректен");
+                    case "CREATE":
+                    case "ALTER":
+                    case "DROP":
+                        System.out.println(stmt.execute(query));
+                        break;
+
+                    default:
+                        System.out.println("Your query is incorrect");
+                }
+
+                stmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-
-            stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
     }
-
 }
