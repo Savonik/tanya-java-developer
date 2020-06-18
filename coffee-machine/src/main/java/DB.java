@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -34,11 +35,16 @@ public class DB {
         }
     }
     
-    protected boolean fill(String product, int amount){
-        String query = "update coffee_machine_state set " +
-                "amount = (select amount from coffee_machine_state where name = '"+product+"')+"+amount+" " +
-                "where name ='"+product+"';";
-        return runSqlQuery(query)==1;
+    protected boolean fill(String productName, int amount){
+        String query = "update coffee_machine_state set amount = amount + ? where name =?;";
+        try (PreparedStatement stmt = getConnection().prepareStatement(query)) {
+            stmt.setInt(1, amount);
+            stmt.setString(2, productName);
+            return stmt.executeUpdate()==1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     
     private static Connection getConnection() {

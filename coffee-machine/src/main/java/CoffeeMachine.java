@@ -1,4 +1,3 @@
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -6,18 +5,18 @@ import java.util.Map;
 
 public class CoffeeMachine {
    
-    private static final DB db = new DB();
+    private static final DB DB = new DB();
 
     public boolean fillCoffeeMachine(String product, int amount) {
         switch (product) {
             case "water":
-                return db.fill("water", amount);
+                return DB.fill("water", amount);
             case "milk":
-                return db.fill("milk", amount);
+                return DB.fill("milk", amount);
             case "coffee":
-                return db.fill("coffee", amount);
+                return DB.fill("coffee", amount);
             case "disposable cups":
-                return db.fill("disposable cups", amount);
+                return DB.fill("disposable cups", amount);
             default:
                 return false;
         }
@@ -25,11 +24,11 @@ public class CoffeeMachine {
 
     public Map<String, String> remaining() {
         Map<String, String> map = new HashMap<>();
-        map.put("water", db.getAmount("water"));
-        map.put("milk", db.getAmount("milk"));
-        map.put("coffee", db.getAmount("coffee"));
-        map.put("cups", db.getAmount("cups"));
-        map.put("cash", db.getAmount("cash"));
+        map.put("water", DB.getAmount("water"));
+        map.put("milk", DB.getAmount("milk"));
+        map.put("coffee", DB.getAmount("coffee"));
+        map.put("cups", DB.getAmount("cups"));
+        map.put("cash", DB.getAmount("cash"));
         return map;
     }
 
