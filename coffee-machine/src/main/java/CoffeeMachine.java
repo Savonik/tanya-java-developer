@@ -1,42 +1,35 @@
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class CoffeeMachine {
-
-    private static int waterAmountInMl = 400;
-    private static int coffeeAmountInG = 540;
-    private static int milkAmountInMl = 120;
-    private static int disposableCupsAmount = 9;
-    private static int cashAmountInUsd = 550;
+   
+    private static final DB db = new DB();
 
     public boolean fillCoffeeMachine(String product, int amount) {
         switch (product) {
             case "water":
-                waterAmountInMl += amount;
-                return true;
+                return db.fill("water", amount);
             case "milk":
-                milkAmountInMl += amount;
-                return true;
+                return db.fill("milk", amount);
             case "coffee":
-                coffeeAmountInG += amount;
-                return true;
+                return db.fill("coffee", amount);
             case "disposable cups":
-                disposableCupsAmount += amount;
-                return true;
+                return db.fill("disposable cups", amount);
             default:
                 return false;
         }
     }
 
-    public Map<String, Integer> remaining() {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("water", waterAmountInMl);
-        map.put("milk", milkAmountInMl);
-        map.put("coffee", coffeeAmountInG);
-        map.put("cups", disposableCupsAmount);
-        map.put("cash", cashAmountInUsd);
+    public Map<String, String> remaining() {
+        Map<String, String> map = new HashMap<>();
+        map.put("water", db.getAmount("water"));
+        map.put("milk", db.getAmount("milk"));
+        map.put("coffee", db.getAmount("coffee"));
+        map.put("cups", db.getAmount("cups"));
+        map.put("cash", db.getAmount("cash"));
         return map;
     }
 

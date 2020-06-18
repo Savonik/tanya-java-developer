@@ -2,7 +2,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 class Application {
-    
+
     private static final Scanner scanner = new Scanner(System.in);
     private static final CoffeeMachine coffeeMachine = new CoffeeMachine();
 
@@ -26,7 +26,7 @@ class Application {
                     fillProducts();
                     break;
                 case "remaining":
-                    Map<String, Integer> map = coffeeMachine.remaining();
+                    Map<String, String> map = coffeeMachine.remaining();
                     System.out.printf("The coffee machine has:\n %s ml of water\n %s ml of milk\n %s g of coffee beans\n %s pcs of disposable cups\n $%s of money\n",
                             map.get("water"), map.get("milk"), map.get("coffee"), map.get("cups"), map.get("cash"));
                     break;
@@ -59,7 +59,7 @@ class Application {
                 return;
         }
         try {
-            System.out.println(coffeeMachine.buy(typeOfCoffee) ? "I have enough resources, making you a coffee!" : 
+            System.out.println(coffeeMachine.buy(typeOfCoffee) ? "I have enough resources, making you a coffee!" :
                     "Your line is incorrect");
         } catch (NotEnoughIngredientsException e) {
             System.out.print("Sorry, cannot make " + typeOfCoffee + ". Not enough: ");
@@ -70,19 +70,23 @@ class Application {
     private static void fillProducts() {
         System.out.println("Write how many ml of water do you want to add:");
         int amount = Integer.parseInt(scanner.nextLine());
-        coffeeMachine.fillCoffeeMachine("water", amount);
+        System.out.println(coffeeMachine.fillCoffeeMachine("water", amount) ?
+                "operation was successfully completed" : "runtime error, try again");
 
         System.out.println("Write how many ml of milk do you want to add:");
         amount = Integer.parseInt(scanner.nextLine());
-        coffeeMachine.fillCoffeeMachine("milk", amount);
+        System.out.println(coffeeMachine.fillCoffeeMachine("milk", amount) ?
+                "operation was successfully completed" : "runtime error, try again");
 
         System.out.println("Write how many grams of coffee beans do you want to add:");
         amount = Integer.parseInt(scanner.nextLine());
-        coffeeMachine.fillCoffeeMachine("coffee", amount);
+        System.out.println(coffeeMachine.fillCoffeeMachine("coffee", amount) ?
+                "operation was successfully completed" : "runtime error, try again");
 
         System.out.println("Write how many disposable cups of coffee do you want to add:");
         amount = Integer.parseInt(scanner.nextLine());
-        coffeeMachine.fillCoffeeMachine("disposable cups", amount);
+        System.out.println(coffeeMachine.fillCoffeeMachine("disposable cups", amount) ?
+                "operation was successfully completed" : "runtime error, try again");
     }
 
     private static String getString() {
