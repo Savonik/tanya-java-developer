@@ -70,7 +70,11 @@ public class UI extends JFrame {
     class ButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            expressionField.setText(String.valueOf(Calculator.calculate(getExpressionField().getText())));
+            try {
+                expressionField.setText(String.valueOf(Calculator.calculate(getExpressionField().getText())));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(UI.this, "Invalid expression", "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

@@ -1,18 +1,15 @@
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Tatiana Savonik
  */
 public class Calculator {
 
-    public static double calculate(String expression) {
-        if (convertToPolishNotation(expression).isEmpty()){
-            System.out.println("Expression is wrong");
-            return Double.NaN;
-        }
+    public static double calculate(String expression) throws ExpressionFormatException {
         List<String> polishExpression = convertToPolishNotation(expression);
         Stack<Double> stack = new Stack<>();
         for (String s : polishExpression) {
@@ -21,7 +18,12 @@ public class Calculator {
             } else {
                 switch (s) {
                     case "+":
-                        stack.push(stack.pop() + stack.pop());
+                        Double stackPop = stack.pop();
+                        if (stack.empty()) {
+                            stack.push(stackPop);
+                            break;
+                        }
+                        stack.push(stackPop + stack.pop());
                         break;
                     case "-":
                         Double pop = stack.pop();
@@ -51,9 +53,10 @@ public class Calculator {
         return stack.peek();
     }
 
-    private static List<String> convertToPolishNotation(String expression) {
-        if (!containsValidChar(expression)){
-            return Collections.emptyList();
+    private static List<String> convertToPolishNotation(String expr) throws ExpressionFormatException {
+        String expression = prepare(expr);
+        if (!isValid(expression)) {
+            throw new ExpressionFormatException(expr + " isn't valid");
         }
         String[] splitExpression = expression.split("(?<=[-+*/()])|(?=[-+*/()])");
         List<String> polishNotationList = new ArrayList<>();
@@ -87,8 +90,23 @@ public class Calculator {
         return polishNotationList;
     }
 
-    private static boolean containsValidChar(String expression) {
-        return expression.matches("[0-9./*\\-+()]+");
+    private static String prepare(String expr) {
+        return expr.replace(" ", "").replace("--", "+")
+                .replace("+-", "-").replace("-+", "-");
+    }
+
+    public static boolean isValid(String expression) {
+        String exprWithoutLeftBracket = expression.replace("(","");
+        String exprWithoutRightBracket = expression.replace(")","");
+        
+        Pattern p = Pattern.compile("[/+*-.]{2,}");
+        Matcher matcher = p.matcher(expression);
+        
+        if (matcher.find()||exprWithoutLeftBracket.length()!=exprWithoutRightBracket.length()) {
+            return false;
+        }
+        
+        return expression.matches("^[0-9(-]{1}[0-9./*\\-+()]+$");
     }
 
     private static int priority(String token) {

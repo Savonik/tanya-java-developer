@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Tatiana Savonik
@@ -49,7 +51,14 @@ public class ButtonsPanel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             MyButton btn = (MyButton) e.getSource();
-            textField.setText(textField.getText() + btn.getText());
+            String newExpression = textField.getText() + btn.getText();
+            
+            Pattern p = Pattern.compile("[/+*-.]{2,}");
+            Matcher matcher = p.matcher(newExpression);
+            if (matcher.find()) {
+                return;
+            }
+            textField.setText(newExpression);
         }
     }
 
