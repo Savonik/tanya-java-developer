@@ -22,7 +22,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.github.savonik.App</mainClass>
+                            <mainClass>com.github.savonik.bot.javatest.App</mainClass>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>dependency</classpathPrefix>
                         </manifest>

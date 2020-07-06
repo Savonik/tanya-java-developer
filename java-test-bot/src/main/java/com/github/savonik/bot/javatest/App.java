@@ -1,4 +1,4 @@
-package com.github.savonik;
+package com.github.savonik.bot.javatest;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -9,9 +9,8 @@ import com.pengrad.telegrambot.request.SendMessage;
 public class App {
 
     public static void main(String[] args) {
-        // Create your own telegram bot in telegram app @BotFather. It will give you API token
-        String APIToken = "";
-        TelegramBot bot = new TelegramBot(APIToken);
+        String apiToken = "1389946659:AAG9EkS1VFIaDADyAnQxQV-bFaNCh96dgUQ";
+        TelegramBot bot = new TelegramBot(apiToken);
         bot.setUpdatesListener(updates -> {
             for (Update update : updates) {
                 Message message = update.message();
