@@ -3,7 +3,6 @@ package com.github.savonik.bot.javatest.db;
 import entities.Answer;
 import entities.Question;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,11 +18,10 @@ import java.util.Collections;
  * @author Tatiana Savonik
  */
 public class DB {
-
-    private static final String URL =
-            String.format("jdbc:sqlite:java-test-bot%1$ssrc%1$smain%1$sresources%1$stests.db", File.separator);
+    
+    private static final String URL = Config.getDbUrl();
     private Connection conn;
-
+    
     private Connection getConnection() {
         if (conn == null) {
             try {

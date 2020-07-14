@@ -1,5 +1,6 @@
 package com.github.savonik.bot.javatest;
 
+import com.github.savonik.bot.javatest.db.Config;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
@@ -14,14 +15,12 @@ import entities.Question;
 
 import java.util.List;
 
-
 public class App {
 
     public static void main(String[] args) {
-
         DB db = new DB();
-
-        String apiToken = "1389946659:AAG9EkS1VFIaDADyAnQxQV-bFaNCh96dgUQ";
+        
+        String apiToken = Config.getApiToken();
         TelegramBot bot = new TelegramBot(apiToken);
         bot.setUpdatesListener(updates -> {
             for (Update update : updates) {
