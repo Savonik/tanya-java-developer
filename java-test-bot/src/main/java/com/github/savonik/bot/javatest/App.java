@@ -1,6 +1,7 @@
 package com.github.savonik.bot.javatest;
 
 import com.github.savonik.bot.javatest.db.Config;
+import com.github.savonik.bot.javatest.db.DB;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
@@ -9,17 +10,17 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.model.request.ParseMode;
 import com.pengrad.telegrambot.request.SendMessage;
-import entities.Answer;
-import com.github.savonik.bot.javatest.db.DB;
-import entities.Question;
+import com.github.savonik.bot.javatest.entities.Answer;
+import com.github.savonik.bot.javatest.entities.Question;
+
 
 import java.util.List;
 
 public class App {
 
     public static void main(String[] args) {
-        DB db = new DB();
-        
+        DB db = new DB(Config.getDbUrl());
+
         String apiToken = Config.getApiToken();
         TelegramBot bot = new TelegramBot(apiToken);
         bot.setUpdatesListener(updates -> {
@@ -32,8 +33,8 @@ public class App {
 
                 long chatId = message.chat().id();
 
-                Question question = db.getRandomQuestion();
-                List<Answer> answers = db.getAnswers(question.getId());
+                Question question = db.getRandom(Question.class);
+                List<Answer> answers = db.getAll(Answer.class, question.getId());
 
                 StringBuilder msg = new StringBuilder();
                 msg.append(question.getText()).append("\n");
@@ -57,5 +58,5 @@ public class App {
     private static InlineKeyboardButton[] newButton(int questionId, String answerLetter) {
         return new InlineKeyboardButton[]{new InlineKeyboardButton(answerLetter).callbackData(questionId + " " + answerLetter)};
     }
-    
+
 }
