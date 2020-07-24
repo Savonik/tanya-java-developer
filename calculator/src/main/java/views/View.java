@@ -1,27 +1,28 @@
+package views;
+
+import controllers.Controller;
+import models.Model;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * @author Tatiana Savonik
  */
+public class View extends JFrame {
 
-public class UI extends JFrame {
-    private JTextField expressionField;
+    private static JTextField expressionField;
     private MyButton equalsBtn;
     private ButtonsPanel buttonsPanel;
+    private final Controller controller;
 
-    public UI(String title) {
+    public View(String title, Controller controller) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
         super(title);
+        this.controller = controller;
         init();
-    }
-
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        UI frame = new UI("Calculator");
-        frame.setLocationRelativeTo(null);
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        frame.setVisible(true);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     }
 
     private void init() {
@@ -41,7 +42,8 @@ public class UI extends JFrame {
         if (buttonsPanel != null) {
             return buttonsPanel;
         }
-        buttonsPanel = new ButtonsPanel(expressionField);
+        buttonsPanel = new ButtonsPanel();
+        buttonsPanel.addListener(controller.getButtonListener());
         buttonsPanel.setBackground(Color.orange);
         return buttonsPanel;
     }
@@ -51,7 +53,7 @@ public class UI extends JFrame {
             return equalsBtn;
         }
         equalsBtn = new MyButton("=");
-        equalsBtn.addActionListener(new ButtonListener());
+        equalsBtn.addActionListener(controller.getButtonListener());
         return equalsBtn;
     }
 
@@ -67,14 +69,11 @@ public class UI extends JFrame {
         return expressionField;
     }
 
-    class ButtonListener implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            try {
-                expressionField.setText(String.valueOf(Calculator.calculate(getExpressionField().getText())));
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(UI.this, "Invalid expression", "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
-        }
+    public static void setExpressionField(String expression) {
+        expressionField.setText(expression);
+    }
+
+    public static void printError() {
+        JOptionPane.showMessageDialog(null, "Invalid expression", "ERROR", JOptionPane.ERROR_MESSAGE);
     }
 }

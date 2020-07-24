@@ -1,7 +1,9 @@
+package models;
+
 /**
  * @author Tatiana Savonik
  */
-class ExpressionFormatException extends Exception {
+public class ExpressionFormatException extends Exception {
     public ExpressionFormatException(String message) {
         super(message);
     }

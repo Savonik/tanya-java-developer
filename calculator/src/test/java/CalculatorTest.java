@@ -1,3 +1,5 @@
+import models.Calculator;
+import models.ExpressionFormatException;
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.assertTrue;
@@ -24,7 +26,7 @@ public class CalculatorTest {
         Assert.assertEquals(Double.NaN, Calculator.calculate("-1/0+1/0"), 0.00001);
         Assert.assertEquals(Double.POSITIVE_INFINITY, Calculator.calculate("1+10000/0"), 0.00001);
     }
-    
+
     @Test
     public void ExpressionFormatException() {
         try {
@@ -33,7 +35,7 @@ public class CalculatorTest {
         } catch (ExpressionFormatException e) {
             assertTrue(true);
         }
-        
+
         try {
             Calculator.calculate("...5+5");
             fail();

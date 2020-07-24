@@ -1,3 +1,5 @@
+package models;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -96,16 +98,16 @@ public class Calculator {
     }
 
     public static boolean isValid(String expression) {
-        String exprWithoutLeftBracket = expression.replace("(","");
-        String exprWithoutRightBracket = expression.replace(")","");
-        
+        String exprWithoutLeftBracket = expression.replace("(", "");
+        String exprWithoutRightBracket = expression.replace(")", "");
+
         Pattern p = Pattern.compile("[/+*-.]{2,}");
         Matcher matcher = p.matcher(expression);
-        
-        if (matcher.find()||exprWithoutLeftBracket.length()!=exprWithoutRightBracket.length()) {
+
+        if (matcher.find() || exprWithoutLeftBracket.length() != exprWithoutRightBracket.length()) {
             return false;
         }
-        
+
         return expression.matches("^[0-9(-]{1}[0-9./*\\-+()]+$");
     }
 
