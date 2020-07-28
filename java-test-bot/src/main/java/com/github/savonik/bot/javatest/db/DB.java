@@ -8,16 +8,19 @@ import java.util.stream.Collectors;
 
 public class DB {
 
-    private final Connection conn;
+    private static final String URL = Config.getDbUrl();
+    private Connection conn;
 
-    public DB(String jdbcURL) {
-        try {
-            conn = DriverManager.getConnection(jdbcURL);
-        } catch (SQLException e) {
-            throw new IllegalStateException("Failed to get connection", e);
+    private Connection getConnection() {
+        if (conn == null) {
+            try {
+                conn = DriverManager.getConnection(URL);
+            } catch (SQLException e) {
+                throw new IllegalStateException("Failed to connect to DB", e);
+            }
         }
+        return conn;
     }
-    
 
     public <T> List<T> getAll(Class<T> type, Object id) {
         Table table = type.getAnnotation(Table.class);
@@ -49,7 +52,7 @@ public class DB {
         System.out.println(query);
 
         List<T> objects = new ArrayList<>();
-        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+        try (Statement stmt = getConnection().createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 T obj = type.newInstance();
                 for (Field field : fields) {
@@ -83,7 +86,7 @@ public class DB {
         System.out.println(query);
 
         List<T> objects = new ArrayList<>();
-        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+        try (Statement stmt = getConnection().createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 T obj = type.newInstance();
                 for (Field field : fields) {
@@ -124,7 +127,7 @@ public class DB {
 
         object = getObjectByType(type, object);
 
-        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
+        try (Statement stmt = getConnection().createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             while (rs.next()) {
                 for (Field field : fields) {
                     Column column = field.getAnnotation(Column.class);
