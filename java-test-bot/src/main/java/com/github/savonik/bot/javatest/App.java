@@ -2,6 +2,7 @@ package com.github.savonik.bot.javatest;
 
 import com.github.savonik.bot.javatest.db.Config;
 import com.github.savonik.bot.javatest.db.DB;
+import com.github.savonik.bot.javatest.entities.CallBackAnswer;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 
@@ -33,7 +34,8 @@ public class App {
 
     public static void main(String[] args) {
 
-        Map<Integer, List<String>> map = new HashMap<>();
+        Map<Integer, List<CallBackAnswer>> usersAnswers = new HashMap<>();
+
         BOT.setUpdatesListener(updates -> {
             for (Update update : updates) {
                 Message message = update.message();
@@ -41,28 +43,26 @@ public class App {
                 if (message == null) {
                     int userId = update.callbackQuery().from().id();
 
-                    map.putIfAbsent(userId, new ArrayList<>());
+                    usersAnswers.putIfAbsent(userId, new ArrayList<>());
                     String callbackData = update.callbackQuery().data();
-                    String[] dataValues = callbackData.split(" ");
-                    String questionId = dataValues[0];
-                    String selectedOption = dataValues[1];
 
-                    if (SUBMIT_EXPRESSION.equals(selectedOption)) {
-                        List<String> userAnswers = new ArrayList<>();
-                        for (String data : map.get(userId)) {
-                            if (data.contains(questionId)) {
-                                userAnswers.add(data.split(" ")[1]);
-                            }
-                        }
-                        sendResult(questionId, userAnswers, userId);
-                        map.remove(userId);
+                    CallBackAnswer answerCallBack = CallBackAnswer.fromJSON(callbackData);
+                    String answer = answerCallBack.getAnswer();
+                    String questionId = answerCallBack.getQuestionId();
+
+                    if (SUBMIT_EXPRESSION.equals(answer)) {
+                        List<String> userAnswers = getUserAnswersByQuestionId(usersAnswers, userId, questionId);
+                        sendResult(answerCallBack.getQuestionId(), userAnswers, userId);
+                        usersAnswers.remove(userId);
                         continue;
                     }
-                    List<String> answers = map.get(userId);
-                    if (answers.contains(callbackData)) {
-                        answers.remove(callbackData);
+
+                    List<CallBackAnswer> answers = usersAnswers.get(userId);
+
+                    if (answers.contains(answerCallBack)) {
+                        answers.remove(answerCallBack);
                     } else {
-                        answers.add(callbackData);
+                        answers.add(answerCallBack);
                     }
                     continue;
                 }
@@ -80,7 +80,17 @@ public class App {
             return UpdatesListener.CONFIRMED_UPDATES_ALL;
         });
     }
+    
 
+    private static List<String> getUserAnswersByQuestionId(Map<Integer, List<CallBackAnswer>> usersAnswers, int userId, String questionId) {
+        List<String> userAnswers = new ArrayList<>();
+        for (CallBackAnswer callBackAnswer : usersAnswers.get(userId)) {
+            if (callBackAnswer.getQuestionId().equals(questionId)) {
+                userAnswers.add(callBackAnswer.getAnswer());
+            }
+        }
+        return userAnswers;
+    }
 
     private static InlineKeyboardMarkup getAnswerButtons(Question question, List<Answer> answers) {
         InlineKeyboardButton[][] buttons = new InlineKeyboardButton[answers.size() + 1][];
@@ -94,7 +104,7 @@ public class App {
     private static String getQuizMsg(Question question, List<Answer> answers) {
         StringBuilder msg = new StringBuilder();
         msg.append(question.getText()).append("\n");
-
+     
         for (Answer answer : answers) {
             msg.append(answer.getLetter()).append(") ").append(answer.getAnswer()).append("\n");
         }
@@ -110,7 +120,11 @@ public class App {
     }
 
     private static InlineKeyboardButton[] newButton(int questionId, String answerLetter) {
-        return new InlineKeyboardButton[]{new InlineKeyboardButton(answerLetter).callbackData(questionId + " " + answerLetter)};
+        CallBackAnswer answerCallBack = new CallBackAnswer();
+        answerCallBack.setAnswer(answerLetter);
+        answerCallBack.setQuestionId(String.valueOf(questionId));
+        String callBack = answerCallBack.toJSON();
+        return new InlineKeyboardButton[]{new InlineKeyboardButton(answerLetter).callbackData(callBack)};
     }
 
     private static boolean isCorrectAnswers(String questionID, List<String> userAnswers) {
