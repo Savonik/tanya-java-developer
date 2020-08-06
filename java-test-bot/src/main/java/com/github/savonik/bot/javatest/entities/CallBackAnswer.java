@@ -31,9 +31,15 @@ public class CallBackAnswer {
         Gson g = new Gson();
         return g.fromJson(callbackData, CallBackAnswer.class);
     }
-    
+
     public String toJSON() {
         Gson g = new Gson();
         return g.toJson(this);
     }
+
+    public boolean equals(CallBackAnswer callBackAnswer) {
+        return this.getAnswer().equals(callBackAnswer.getAnswer())
+                && this.getQuestionId().equals(callBackAnswer.getQuestionId());
+    }
+
 }

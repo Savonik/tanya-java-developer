@@ -18,17 +18,7 @@ public class Question {
     private int chapterId;
     @Column("comment")
     private String comment;
-
-    public Question() {
-    }
-
-    public Question(int id, String text, int chapterId, String comment) {
-        this.id = id;
-        this.text = text;
-        this.chapterId = chapterId;
-        this.comment = comment;
-    }
-
+    
     public int getId() {
         return id;
     }
@@ -36,12 +26,5 @@ public class Question {
     public String getText() {
         return text;
     }
-
-    public int getChapterId() {
-        return chapterId;
-    }
-
-    public String getComment() {
-        return comment;
-    }
+    
 }

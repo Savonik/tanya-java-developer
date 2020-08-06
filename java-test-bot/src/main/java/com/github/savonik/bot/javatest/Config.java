@@ -1,4 +1,4 @@
-package com.github.savonik.bot.javatest.db;
+package com.github.savonik.bot.javatest;
 
 import java.util.ResourceBundle;
 

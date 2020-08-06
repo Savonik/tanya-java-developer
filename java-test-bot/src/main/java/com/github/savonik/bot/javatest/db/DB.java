@@ -8,13 +8,17 @@ import java.util.stream.Collectors;
 
 public class DB {
 
-    private static final String URL = Config.getDbUrl();
+    private final String url;
     private Connection conn;
+
+    public DB(String url) {
+        this.url = url;
+    }
 
     private Connection getConnection() {
         if (conn == null) {
             try {
-                conn = DriverManager.getConnection(URL);
+                conn = DriverManager.getConnection(url);
             } catch (SQLException e) {
                 throw new IllegalStateException("Failed to connect to DB", e);
             }
@@ -103,7 +107,6 @@ public class DB {
 
         return objects;
     }
-
 
     public <T> T getRandom(Class<T> type) {
         
