@@ -142,7 +142,7 @@ class JavaTestBot {
         sendResult(userAnswers, userId);
 
         if (isCorrectAnswers(userAnswers) || userAnswers.getHaveIncorrectAnswer()) {
-            bot.execute(new SendMessage(userId, EXPLANATION + "\n\n" + userAnswers.getComment()).parseMode(ParseMode.HTML).replyMarkup(getNewQuestionButtons()));
+            bot.execute(new SendMessage(userId, EXPLANATION + "\n\n" + userAnswers.getExplanation()).parseMode(ParseMode.HTML).replyMarkup(getNewQuestionButtons()));
             usersAnswers.remove(userId);
         } else {
             userAnswers.setHaveIncorrectAnswer();

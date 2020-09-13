@@ -9,7 +9,7 @@ import java.util.List;
 public class CurrentUserQuestion {
 
     private final int messageId;
-    private final String comment;
+    private final String explanation;
 
     private boolean haveIncorrectAnswer;
     private final List<String> userAnswerLetters = new ArrayList<>();
@@ -19,7 +19,7 @@ public class CurrentUserQuestion {
     public CurrentUserQuestion(int lastMessageId, Question question, List<Answer> answers) {
         this.messageId = lastMessageId;
         int questionId = question.getId();
-        this.comment = question.getComment();
+        this.explanation = question.getExplanation();
         this.answers = answers;
     }
 
@@ -35,8 +35,8 @@ public class CurrentUserQuestion {
         return messageId;
     }
 
-    public String getComment() {
-        return comment;
+    public String getExplanation() {
+        return explanation;
     }
 
     public List<String> getUserAnswers() {

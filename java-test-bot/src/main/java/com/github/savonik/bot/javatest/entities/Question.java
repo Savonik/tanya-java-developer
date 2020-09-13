@@ -27,8 +27,8 @@ public class Question {
         return text;
     }
 
-    public String getComment() {
-        return comment;
+    public String getExplanation() {
+        return explanation;
     }
     
 }
