@@ -10,7 +10,7 @@ public class CallBackAnswer {
 
     private String answer;
     private String questionId;
-
+    
     public String getAnswer() {
         return answer;
     }

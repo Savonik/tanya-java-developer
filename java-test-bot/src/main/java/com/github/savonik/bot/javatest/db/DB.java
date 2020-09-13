@@ -53,7 +53,6 @@ public class DB {
 
         final String queryTemplate = "SELECT %s FROM %s WHERE %s = %s";
         String query = String.format(queryTemplate, fieldNames, tableName, idColumn, id);
-        System.out.println(query);
 
         List<T> objects = new ArrayList<>();
         try (Statement stmt = getConnection().createStatement(); ResultSet rs = stmt.executeQuery(query)) {
@@ -87,7 +86,6 @@ public class DB {
 
         final String queryTemplate = "SELECT %s FROM %s";
         String query = String.format(queryTemplate, fieldNames, tableName);
-        System.out.println(query);
 
         List<T> objects = new ArrayList<>();
         try (Statement stmt = getConnection().createStatement(); ResultSet rs = stmt.executeQuery(query)) {
@@ -124,7 +122,6 @@ public class DB {
 
         final String queryTemplate = "SELECT %s FROM %s order by random() limit 1";
         String query = String.format(queryTemplate, fieldNames, tableName);
-        System.out.println(query);
         
         T object = null;
 

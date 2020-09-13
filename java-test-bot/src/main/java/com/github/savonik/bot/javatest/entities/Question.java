@@ -26,5 +26,9 @@ public class Question {
     public String getText() {
         return text;
     }
+
+    public String getComment() {
+        return comment;
+    }
     
 }
