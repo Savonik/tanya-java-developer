@@ -16,8 +16,8 @@ public class Question {
     private String text;
     @Column("chapter_id")
     private int chapterId;
-    @Column("comment")
-    private String comment;
+    @Column("explanation")
+    private String explanation;
     
     public int getId() {
         return id;
