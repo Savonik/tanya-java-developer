@@ -1,0 +1,1 @@
+move "C:\Java projects\tanya-java-developer\todo\target\todo-app-1.0-SNAPSHOT.war" "C:\Java projects\tools\apache-tomcat-8.5.57-windows-x64\apache-tomcat-8.5.57\webapps\todo.war"

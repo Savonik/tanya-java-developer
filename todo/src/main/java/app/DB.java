@@ -1,8 +1,9 @@
+package app;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -12,21 +13,27 @@ import java.util.List;
 
 public class DB {
 
-    private static final String URL = "jdbc:postgresql://localhost/mydb?user=postgres&password=savonik1993";
+    private static final String URL = "jdbc:postgresql://localhost/mydb";
     private Connection conn;
-
     private Connection getConnection() {
         if (conn == null) {
+
             try {
-                conn = DriverManager.getConnection(URL);
+                Class.forName("org.postgresql.Driver");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                conn = DriverManager.getConnection(URL, "postgres", "savonik1993");
             } catch (SQLException e) {
-                throw new IllegalStateException("Failed to connect to DB", e);
+                throw new IllegalStateException("Failed to connect to app.DB", e);
             }
         }
         return conn;
     }
 
-    protected DB() {
+    public DB() {
         String query = "CREATE TABLE IF NOT EXISTS task_list(task serial primary key, name varchar(50) NOT NULL," +
                 "done boolean NOT NULL DEFAULT false, deadline_date date NOT NULL DEFAULT now());";
         try (Statement stmt = getConnection().createStatement()) {
@@ -89,7 +96,7 @@ public class DB {
         return getTasks("SELECT task, name, done, deadline_date FROM task_list WHERE done ORDER BY task");
     }
 
-    protected List<Task> getAll() {
+    public List<Task> getAll() {
         return getTasks("SELECT task, name, done, deadline_date FROM task_list ORDER BY task");
     }
 

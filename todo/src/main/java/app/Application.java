@@ -1,3 +1,5 @@
+package app;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -19,7 +21,7 @@ import java.util.Scanner;
  * @author Татьяна
  */
 
-class Application {
+public class Application {
 
     private static final int MAX_TASK_LENGTH = 50;
     private static final DB TASK_LIST = new DB();
@@ -55,7 +57,7 @@ class Application {
                 } catch (ParseException e) {
                     System.err.println("Adding failed.  Reason: " + e.getMessage());
                     HelpFormatter helpFormatter = new HelpFormatter();
-                    helpFormatter.printHelp("TODO app [-n <Task name>] [-d <date>]",
+                    helpFormatter.printHelp("TODO app [-n <app.Task name>] [-d <date>]",
                             options);
                     return;
                 }
@@ -141,7 +143,7 @@ class Application {
         }
         int taskNumber = TASK_LIST.createToDoTask(nameOfTask, date);
         if (taskNumber == 0) {
-            System.out.println("Task wasn't created");
+            System.out.println("app.Task wasn't created");
             return;
         }
         System.out.printf("task #%s created\n", taskNumber);
@@ -155,7 +157,7 @@ class Application {
         }
         int taskNumber = TASK_LIST.createToDoTask(nameOfTask);
         if (taskNumber == 0) {
-            System.out.println("Task wasn't created");
+            System.out.println("app.Task wasn't created");
             return;
         }
         System.out.printf("task #%s created\n", taskNumber);
